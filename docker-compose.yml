@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  buildozer:
+    image: "kivy/buildozer"
+    volumes:
+      - .:/home/user/hostcwd
+    restart: "always"
+    networks:
+      - "buildozer"
+    command: >
+      android debug
+
+networks:
+  buildozer:
+    driver: "bridge"
