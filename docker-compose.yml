@@ -5,7 +5,7 @@ services:
     image: "kivy/buildozer"
     volumes:
       - .:/home/user/hostcwd
-    restart: "always"
+    restart: "no"
     networks:
       - "buildozer"
     command: >
