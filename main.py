@@ -1,17 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# This file created with KivyCreatorProject
-# <https://github.com/HeaTTheatR/KivyCreatorProgect
-#
-# Copyright (c) 2020 Ivanov Yuri and KivyMD
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# LICENSE: MIT
-
-# Entry point to the application. Runs the main program.py program code.
-# In case of error, displays a window with its text.
 
 import os
 import sys
@@ -103,7 +90,7 @@ def main():
                 app.screen.clear_widgets()
                 app.screen.add_widget(report)
             except AttributeError:
-            	create_error_monitor()
+                create_error_monitor()
         else:
             create_error_monitor()
 

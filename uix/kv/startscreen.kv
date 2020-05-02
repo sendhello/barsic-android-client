@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
-#
-# This file created with KivyCreatorProject
-# <https://github.com/HeaTTheatR/KivyCreatorProgect
-#
-# Copyright (c) 2020 Ivanov Yuri and KivyMD
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# LICENSE: MIT
 
 #:import NavDrawer uix.baseclass.navdrawer.NavDrawer
 #:import License uix.baseclass.license.License
 #:import BaseScreen uix.baseclass.basescreen.BaseScreen
 #:import About uix.baseclass.about.About
+#:import About uix.baseclass.report.Reports
+#:import About uix.baseclass.zones.Zones
+#:import About uix.baseclass.short_report.ShortReport
+#:import About uix.baseclass.total_report.TotalReport
 
 <StartScreen>
 
@@ -33,6 +27,18 @@
 
         BaseScreen:
             id: base
+
+        Zones:
+            id: zones
+
+        ShortReport:
+            id: short_report
+
+        TotalReport:
+            id: total_report
+
+        Reports:
+            id: report
 
         License:
             id: license

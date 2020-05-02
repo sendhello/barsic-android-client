@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+
+
+<KitchenSinkItemConfirm>
+    on_release: root.set_icon(check)
+
+    CheckboxRightWidget:
+        id: check
+        group: "check"
+
+
+<KitchenSinkDialogsCustomContent>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        hint_text: "City"
+
+    MDTextField:
+        hint_text: "Street"
+
+
+<TotalReport>:
+    name: 'total_report'
+    app: app
+
+    MDRectangleFlatIconButton:
+        text: "MDRectangleFlatIconButton"
+        icon: "timetable"
+        width: dp(300)
+        pos_hint: {'center_x': .5}
+
+    MDRaisedButton:
+        text: "ALERT"
+        pos_hint: {'center_x': .5, 'center_y': .8}
+        on_release: root.show_example_alert_dialog()
+
+    MDRaisedButton:
+        text: "CONFIRMATION"
+        pos_hint: {'center_x': .5, 'center_y': .4}
+        on_release: root.show_example_confirmation_dialog()
+
+    MDRaisedButton:
+        text: "CUSTOM"
+        pos_hint: {'center_x': .5, 'center_y': .2}
+        opposite_colors: True
+        on_release: root.show_example_custom_dialog()

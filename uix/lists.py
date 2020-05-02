@@ -36,6 +36,7 @@ from kivymd.uix.list import (
     OneLineIconListItem,
     ThreeLineAvatarIconListItem,
     OneLineAvatarIconListItem,
+    OneLineAvatarListItem
 )
 
 
@@ -111,6 +112,11 @@ class Item(OneLineListItem):
 class SingleIconItem(OneLineIconListItem):
     events_callback = ObjectProperty()
     icon = StringProperty("alert-circle")
+
+
+class OneLineLeftAvatarItem(OneLineAvatarListItem):
+    divider = None
+    source = StringProperty()
 
 
 class Lists(BoxLayout):

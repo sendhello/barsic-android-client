@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-#
-# This file created with KivyCreatorProject
-# <https://github.com/HeaTTheatR/KivyCreatorProgect
-#
-# Copyright (c) 2020 Ivanov Yuri and KivyMD
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# LICENSE: MIT
 
 #:import os os
 #:import SingleIconItem uix.lists.SingleIconItem
+#:import images_path kivymd.images_path
+#:import version main.__version__
 
 
 <LabelSection@Label>:
@@ -24,65 +16,87 @@
 
 
 <NavDrawer>:
-    orientation: 'vertical'
-
     BoxLayout:
-        id: box_avatar
         orientation: 'vertical'
-        padding: dp(10)
-        spacing: dp(10)
-        size_hint_y: .3
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primary_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        Image:
-            id: navigation_image
-            size_hint: None, None
-            size: dp((box_avatar.height * 30) // 100), dp((box_avatar.height * 30) // 100)
-            source: 'data/images/icon.png'
-
-        Widget:
-
-        Label:
-            id: user_name
-            size_hint: None, None
-            height: dp(20)
-            width: self.texture_size[0]
-            halign: 'left'
-            text: '[b]%s[/b]\n[size=12]3.0.0.0[/size]\n' % app.title
-            markup: True
-            font_size: '14sp'
-
-    ScrollView:
-        id: scroll
-        size_hint_y: .7
-
-        GridLayout:
-            cols: 1
+        FloatLayout:
             size_hint_y: None
-            height: self.minimum_height
-            spacing: dp(10)
+            height: "200dp"
 
-            LabelSection:
-                text:  app.translation._('Меню:')
-                events_callback: lambda x: x
+            canvas:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-            SingleIconItem:
-                icon: 'web'
-                text: app.translation._('Язык')
-                events_callback: app.select_locale
+            BoxLayout:
+                id: top_box
+                size_hint_y: None
+                height: "200dp"
+                x: root.parent.x
+                pos_hint: {"top": 1}
 
-            SingleIconItem:
-                icon: 'language-python'
-                text: app.translation._('Лицензия')
-                events_callback: app.show_license
+                FitImage:
+                    source: f"{images_path}kivymd_alpha.png"
 
-            SingleIconItem:
-                icon: 'information'
-                text: 'About'
-                events_callback: app.show_about
+            MDIconButton:
+                icon: "close"
+                x: root.parent.x + dp(10)
+                pos_hint: {"top": 1}
+                on_release: root.parent.set_state()
+
+            MDLabel:
+                markup: True
+                text: f"[b]{app.title}[/b]\nVersion: {version}"
+                x: root.parent.x + dp(10)
+                y: root.height - top_box.height + dp(10)
+                size_hint_y: None
+                height: self.texture_size[1]
+
+        ScrollView:
+            pos_hint: {"top": 1}
+
+            MDGridLayout:
+                id: box_item
+                cols: 1
+                adaptive_height: True
+
+                LabelSection:
+                    text:  app.translation._('Меню:')
+                    events_callback: lambda x: x
+
+                SingleIconItem:
+                    icon: 'puzzle'
+                    text: app.translation._('Зоны')
+                    events_callback: app.show_zones
+
+                SingleIconItem:
+                    icon: 'puzzle'
+                    text: app.translation._('Краткий отчет')
+                    events_callback: app.show_short_report
+
+                SingleIconItem:
+                    icon: 'puzzle'
+                    text: app.translation._('Итоговый отчет')
+                    events_callback: app.show_total_report
+
+                SingleIconItem:
+                    icon: 'puzzle'
+                    text: app.translation._('Отчеты')
+                    events_callback: app.show_reports
+
+                SingleIconItem:
+                    icon: 'web'
+                    text: app.translation._('Настройки')
+                    events_callback: app.select_locale
+
+                SingleIconItem:
+                    icon: 'language-python'
+                    text: app.translation._('Лицензия')
+                    events_callback: app.show_license
+
+                SingleIconItem:
+                    icon: 'information'
+                    text: 'About'
+                    events_callback: app.show_about

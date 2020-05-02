@@ -1,0 +1,293 @@
+# -*- coding: utf-8 -*-
+
+<MyMDLabel@MDLabel>
+    size_hint_y: None
+    height: self.texture_size[1]
+
+<Reports>:
+    name: 'report'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, None
+                size: 0, dp(48)
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                MyMDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Secondary'
+                    size_hint: None, None
+                    size: dp(48)*3, dp(48)
+                    pos_hint: {'left_x': 0.0, 'center_y': 0.5}
+                    text: 'Отчеты'
+                MDSeparator:
+                    height: dp(2)
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(48)
+                pos_hint: {'left_x': 0.5, 'center_y': 0.5}
+
+                MDCheckbox:
+                    id: date_switch
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.click_date_switch()
+                    active: True
+
+                MDLabel:
+                    id: label_date
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: None, None
+                    size: dp(48)*2, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Дата:'
+                BoxLayout:
+                    border: True
+                    MDLabel:
+                        id: date_from
+                        font_style:"Subtitle2"
+                        theme_text_color: 'Primary'
+                        size_hint: None, None
+                        size: dp(48)*2.7, dp(48)
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        id: date_from_button
+                        icon: 'playlist-play'
+                        size_hint: None, None
+                        size: dp(48), dp(48)
+                        pos_hint: {'center_y': 0.42}
+                        on_release: app.show_date_from()
+                BoxLayout:
+                    MDLabel:
+                        id: date_to
+                        font_style:"Subtitle2"
+                        theme_text_color: 'Secondary'
+                        size_hint: None, None
+                        size: dp(48)*2.7, dp(48)
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        #disabled: date_switch.active
+                    MDIconButton:
+                        id: date_to_button
+                        icon: 'playlist-play'
+                        pos_hint: {'center_y': 0.42}
+                        on_release: app.show_date_to()
+                        #disabled: date_switch.active
+
+            #BoxLayout:
+            #    size_hint: 0.8, None
+            #    height: dp(48)*2
+            #    pos_hint: {'center_x': 0.5}
+            #    MDRaisedButton:
+            #        id: org1
+            #        text: "Выбрать организацию 1"
+            #        opposite_colors: True
+            #        size_hint: None, None
+            #        size: 5 * dp(48), dp(48)
+            #        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            #        on_release: app.select_org1()
+            #    Widget:
+            #        size_hint: None, None
+            #        size: dp(48), dp(48)
+            #    MDRaisedButton:
+            #        id: org2
+            #        text: "Выбрать организацию 2"
+            #        opposite_colors: True
+            #        size_hint: None, None
+            #        size: 5 * dp(48), dp(48)
+            #        pos_hint: {'right': 0.5, 'center_y': 0.6}
+            #        on_release: app.select_org2()
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: split_by_days
+                    name: "split_by_days"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(split_by_days.name, split_by_days.active)
+                    active: False
+                    disabled: True
+                MDLabel:
+                    id: split_by_days_text
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Secondary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Разбивать период по дням'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: check_client_count_total_xls
+                    name: "check_client_count_total_xls"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(check_client_count_total_xls.name, check_client_count_total_xls.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Количество клиентов за день (Excel)'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: check_cashreport_xls
+                    name: "check_cashreport_xls"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(check_cashreport_xls.name, check_cashreport_xls.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Суммовой отчет (Excel)'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: check_itogreport_xls
+                    name: "check_itogreport_xls"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(check_itogreport_xls.name, check_itogreport_xls.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Итоговый отчет (Excel)'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: finreport_xls
+                    name: "finreport_xls"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(finreport_xls.name, finreport_xls.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Финансовый отчет (Excel)'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: agentreport_xls
+                    name: "agentreport_xls"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(agentreport_xls.name, agentreport_xls.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Отчет по платежным агентам (Excel)'
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: use_yadisk
+                    name: "use_yadisk"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(use_yadisk.name, use_yadisk.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Использовать Yandex.Disk'
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: finreport_google
+                    name: "finreport_google"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(finreport_google.name, finreport_google.active)
+                MDLabel:
+                    id: finreport_google_text
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'Финансовый отчет (GoogleDocs)'
+
+            BoxLayout:
+                size_hint: 0.8, None
+                size: 0, dp(40)
+                MDCheckbox:
+                    id: finreport_telegram
+                    name: "finreport_telegram"
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+                    on_release: app.change_checkbox(finreport_telegram.name, finreport_telegram.active)
+                MDLabel:
+                    font_style:"Subtitle2"
+                    theme_text_color: 'Primary'
+                    size_hint: 1, None
+                    size: 0, dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    text: 'SMS-отчет в Telegram'
+
+            BoxLayout:
+                size_hint: 1, None
+                size: 0, dp(10)
+                Widget:
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            BoxLayout:
+                size_hint: 1, None
+                size: 0, dp(48)
+                MDRaisedButton:
+                    text: "Сформировать отчеты"
+                    opposite_colors: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    on_release: app.run_report()
+            BoxLayout:
+                size_hint: 1, None
+                size: 0, dp(10)
+                Widget:
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
