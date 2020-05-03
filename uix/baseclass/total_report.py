@@ -7,101 +7,137 @@ import os
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivy.weakproxy import WeakProxy
+
+from kivymd.uix.picker import MDDatePicker, MDLabel
+from datetime import datetime, timedelta
+from kivymd.uix.button import MDRectangleFlatIconButton
 
 from uix.lists import (
     OneLineLeftAvatarItem,
 )
 from kivymd.uix.button import MDFlatButton
-from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineAvatarIconListItem
+from kivy.metrics import dp
+from kivy.properties import NumericProperty
 
 
-class KitchenSinkDialogsCustomContent(BoxLayout):
-    pass
+class DateDialogsContent(BoxLayout):
+    app = ObjectProperty()
 
 
-class KitchenSinkItemConfirm(OneLineAvatarIconListItem):
-    divider = None
-
-    def set_icon(self, instance_check):
-        instance_check.active = True
-        check_list = instance_check.get_widgets(instance_check.group)
-        for check in check_list:
-            if check != instance_check:
-                check.active = False
 
 
 class TotalReport(Screen):
     app = ObjectProperty()
-    simple_dialog = None
-    alert_dialog = None
     custom_dialog = None
-    confirmation_dialog = None
 
-    def show_example_confirmation_dialog(self):
-        if not self.confirmation_dialog:
-            self.confirmation_dialog = MDDialog(
-                title="Phone ringtone",
-                type="confirmation",
-                items=[
-                    KitchenSinkItemConfirm(text="Callisto"),
-                    KitchenSinkItemConfirm(text="Luna"),
-                    KitchenSinkItemConfirm(text="Night"),
-                    KitchenSinkItemConfirm(text="Solo"),
-                    KitchenSinkItemConfirm(text="Phobos"),
-                    KitchenSinkItemConfirm(text="Diamond"),
-                    KitchenSinkItemConfirm(text="Sirena"),
-                    KitchenSinkItemConfirm(text="Red music"),
-                    KitchenSinkItemConfirm(text="Allergio"),
-                    KitchenSinkItemConfirm(text="Magic"),
-                    KitchenSinkItemConfirm(text="Tic-tac"),
-                ],
-                buttons=[
-                    MDFlatButton(
-                        text="CANCEL",
-                        text_color=self.app.theme_cls.primary_color,
-                    ),
-                    MDFlatButton(
-                        text="OK", text_color=self.app.theme_cls.primary_color
-                    ),
-                ],
-            )
-        self.confirmation_dialog.open()
+    def set_date_from(self, date_obj):
+        self.app.date_from = date_obj
+        self.ids.date_from.text = date_obj.strftime('%d-%m-%Y')
+        if self.ids.period.text == 'Период:' and self.app.date_to < self.app.date_from:
+            self.set_date_to(date_obj)
 
-    def show_example_custom_dialog(self):
-        if not self.custom_dialog:
-            self.custom_dialog = MDDialog(
-                title="Address:",
-                type="custom",
-                content_cls=KitchenSinkDialogsCustomContent(),
-                buttons=[
-                    MDFlatButton(
-                        text="CANCEL",
-                        text_color=self.app.theme_cls.primary_color,
-                    ),
-                    MDFlatButton(
-                        text="OK", text_color=self.app.theme_cls.primary_color
-                    ),
-                ],
-            )
-        self.custom_dialog.open()
+    def set_date_to(self, date_obj):
+        self.app.date_to = date_obj
+        self.ids.date_to.text = date_obj.strftime('%d-%m-%Y')
+        if self.app.date_to < self.app.date_from:
+            self.set_date_from(date_obj)
 
-    def show_example_alert_dialog(self):
-        if not self.alert_dialog:
-            self.alert_dialog = MDDialog(
-                title="Reset settings?",
-                text="This will reset your device to its default factory settings.",
-                buttons=[
-                    MDFlatButton(
-                        text="CANCEL",
-                        text_color=self.app.theme_cls.primary_color,
-                    ),
-                    MDFlatButton(
-                        text="ACCEPT",
-                        text_color=self.app.theme_cls.primary_color,
-                    ),
-                ],
+    def show_date_from(self):
+        pd = self.app.date_from
+        try:
+            MDDatePicker(self.set_date_from, pd.year, pd.month, pd.day).open()
+        except AttributeError:
+            MDDatePicker(self.set_date_from).open()
+
+    def show_date_to(self):
+        pd = self.app.date_to
+        try:
+            MDDatePicker(self.set_date_to, pd.year, pd.month, pd.day).open()
+        except AttributeError:
+            MDDatePicker(self.set_date_to).open()
+
+    def clear_dates(self):
+        if 'date_from' in self.ids:
+            self.remove_widget(self.ids.date_from)
+            self.ids.pop('date_from')
+        if 'date_to' in self.ids:
+            self.remove_widget(self.ids.date_to)
+            self.ids.pop('date_to')
+
+    def add_date_widgets(self, date_to=False):
+        date_from_button = MDRectangleFlatIconButton(
+            text=self.app.date_from.strftime('%d-%m-%Y'),
+            icon="timetable",
+            pos_hint={'center_x': .5, 'center_y': .8},
+            size_hint=(0.8, 0.07),
+            on_release=lambda x: self.show_date_from()
+        )
+        self.ids['date_from'] = WeakProxy(date_from_button)
+        self.add_widget(date_from_button)
+        self.app.date_to = self.app.date_from
+        if date_to:
+            date_to_button = MDRectangleFlatIconButton(
+                text=self.app.date_to.strftime('%d-%m-%Y'),
+                icon="timetable",
+                pos_hint={'center_x': .5, 'center_y': .7},
+                size_hint=(0.8, 0.07),
+                on_release=lambda x: self.show_date_to()
             )
-        self.alert_dialog.open()
+            self.ids['date_to'] = WeakProxy(date_to_button)
+            self.add_widget(date_to_button)
+
+    def set_today(self):
+        self.ids.period.text = 'Сегодня'
+        self.clear_dates()
+        self.app.date_from = datetime.now().date()
+        self.app.date_to = self.app.date_from
+
+    def set_yesterday(self):
+        self.ids.period.text = 'Вчера'
+        self.clear_dates()
+        self.app.date_from = datetime.now().date() - timedelta(days=1)
+        self.app.date_to = self.app.date_from
+
+    def set_date(self):
+        self.ids.period.text = 'Число:'
+        self.clear_dates()
+        self.add_date_widgets()
+
+    def set_period(self):
+        self.ids.period.text = 'Период:'
+        self.clear_dates()
+        self.add_date_widgets(date_to=True)
+
+    def bottom_sheet(self):
+        from kivymd.uix.bottomsheet import MDListBottomSheet
+
+        bs_menu_period = MDListBottomSheet()
+        bs_menu_period.add_item(
+            "Сегодня",
+            lambda x: self.set_today(),
+            icon="clipboard-account",
+        )
+        bs_menu_period.add_item(
+            "Вчера",
+            lambda x: self.set_yesterday(),
+            icon="clipboard-account",
+        )
+        bs_menu_period.add_item(
+            "Число",
+            lambda x: self.set_date(),
+            icon="clipboard-account",
+        )
+        bs_menu_period.add_item(
+            "Период",
+            lambda x: self.set_period(),
+            icon="clipboard-account",
+        )
+        bs_menu_period.open()
+
+
+
+
 
 

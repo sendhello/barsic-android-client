@@ -1,49 +1,60 @@
 # -*- coding: utf-8 -*-
 
 
-<KitchenSinkItemConfirm>
-    on_release: root.set_icon(check)
-
-    CheckboxRightWidget:
-        id: check
-        group: "check"
-
-
-<KitchenSinkDialogsCustomContent>
+<DateDialogsContent>
+    name: 'date_dialog_content'
+    app: app
     orientation: "vertical"
     spacing: "12dp"
-    size_hint_y: None
-    height: "120dp"
+    size_hint: 1, None
+    height: dp(120)
 
-    MDTextField:
-        hint_text: "City"
+    BoxLayout:
+        MDLabel:
+            id: label_date_from
+            font_style:"Subtitle2"
+            theme_text_color: 'Primary'
+            size_hint: .5 - dp(48), None
+            size: 0, dp(48)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            text: 'C'
 
-    MDTextField:
-        hint_text: "Street"
+        MDRectangleFlatIconButton:
+            id: date_from
+            text: app.date_from.strftime('%d/%m/%Y')
+            icon: "timetable"
+            pos_hint: {'center_x': .5, 'center_y': .8}
+            on_release: root.show_date_from()
+
+    BoxLayout:
+        MDLabel:
+            id: label_date_to
+            font_style:"Subtitle2"
+            theme_text_color: 'Primary'
+            size_hint: .5 - dp(48), None
+            size: 0, dp(48)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            text: 'По'
+
+        MDRectangleFlatIconButton:
+            id: date_to
+            text: app.date_to.strftime('%d/%m/%Y')
+            icon: "timetable"
+            pos_hint: {'center_x': .5, 'center_y': .8}
+            on_release: root.show_date_to()
 
 
 <TotalReport>:
     name: 'total_report'
     app: app
+    orientation: "vertical"
 
-    MDRectangleFlatIconButton:
-        text: "MDRectangleFlatIconButton"
-        icon: "timetable"
-        width: dp(300)
-        pos_hint: {'center_x': .5}
+    MDRoundFlatIconButton:
+        id: period
+        font_style:"Subtitle2"
+        theme_text_color: 'Primary'
+        size_hint: .5, .07
+        text: 'Сегодня'
+        pos_hint: {'center_x': .5, 'center_y': .9}
+        on_release: root.bottom_sheet()
 
-    MDRaisedButton:
-        text: "ALERT"
-        pos_hint: {'center_x': .5, 'center_y': .8}
-        on_release: root.show_example_alert_dialog()
-
-    MDRaisedButton:
-        text: "CONFIRMATION"
-        pos_hint: {'center_x': .5, 'center_y': .4}
-        on_release: root.show_example_confirmation_dialog()
-
-    MDRaisedButton:
-        text: "CUSTOM"
-        pos_hint: {'center_x': .5, 'center_y': .2}
-        opposite_colors: True
-        on_release: root.show_example_custom_dialog()

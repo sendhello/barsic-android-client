@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
-#
-# This file created with KivyCreatorProject
-# <https://github.com/HeaTTheatR/KivyCreatorProgect
-#
-# Copyright (c) 2020 Ivanov Yuri and KivyMD
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# LICENSE: MIT
 
 import os
 import sys
 from ast import literal_eval
 from datetime import datetime, timedelta
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -27,7 +19,6 @@ from main import __version__
 from uix.baseclass.translation import Translation
 from uix.baseclass.startscreen import StartScreen
 from uix.lists import Lists
-from kivymd.uix.picker import MDDatePicker
 
 from kivymd.app import MDApp
 from kivymd.toast import toast
@@ -41,8 +32,8 @@ class Barsic(MDApp):
     nav_drawer = ObjectProperty()
     action_bar = ObjectProperty()
     lang = StringProperty('ru')
-    previous_date_from = ObjectProperty()
-    previous_date_to = ObjectProperty()
+    date_from = ObjectProperty()
+    date_to = ObjectProperty()
 
     def __init__(self, **kvargs):
         super(Barsic, self).__init__(**kvargs)
@@ -62,8 +53,8 @@ class Barsic(MDApp):
         self.translation = Translation(
             self.lang, 'Ttest', os.path.join(self.directory, 'data', 'locales')
         )
-        self.date_from = datetime.strptime(datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
-        self.date_to = self.date_from + timedelta(1)
+        self.date_from = datetime.now().date()
+        self.date_to = self.date_from
 
     def get_application_config(self):
         return super(Barsic, self).get_application_config(
@@ -159,7 +150,6 @@ class Barsic(MDApp):
         self.action_bar.title = 'total_report'
         self.list_previous_screens.append('total_report')
         self.screen.ids.action_bar.left_action_items = [['menu', lambda x: self.nav_drawer.toggle_nav_drawer()]]
-        self.set_date_from(datetime.now().date())
 
     def show_reports(self, *args):
         self.nav_drawer.toggle_nav_drawer()
@@ -169,7 +159,6 @@ class Barsic(MDApp):
         self.screen.ids.action_bar.left_action_items = [['menu', lambda x: self.nav_drawer.toggle_nav_drawer()]]
         # Загрузка параметров из INI-файла
         self.load_checkbox()
-        self.set_date_from(datetime.now().date())
 
     def show_license(self, *args):
         self.nav_drawer.toggle_nav_drawer()
@@ -223,38 +212,7 @@ class Barsic(MDApp):
         # self.root.ids.report.ids.finreport_telegram.active = self.finreport_telegram
         pass
 
-    def set_date_from(self, date_obj):
-        self.previous_date_from = date_obj
-        self.date_from = datetime.strptime(str(date_obj), '%Y-%m-%d')
-        self.root.ids.report.ids.date_from.text = str(date_obj)
-        if self.date_to < self.date_from or self.root.ids.report.ids.date_switch.active:
-            self.set_date_to(date_obj)
 
-    def show_date_from(self):
-        pd = self.previous_date_from
-        try:
-            MDDatePicker(self.set_date_from,
-                         pd.year, pd.month, pd.day).open()
-        except AttributeError:
-            MDDatePicker(self.set_date_from).open()
-
-    def set_date_to(self, date_obj):
-        self.previous_date_to = date_obj
-        self.date_to = datetime.strptime(str(date_obj), '%Y-%m-%d') + timedelta(1)
-        self.root.ids.report.ids.date_to.text = str(date_obj)
-        if self.date_to < self.date_from:
-            self.set_date_from(date_obj)
-
-    def show_date_to(self):
-        if self.root.ids.report.ids.date_switch.active:
-            pass
-        else:
-            pd = self.previous_date_to
-            try:
-                MDDatePicker(self.set_date_to,
-                             pd.year, pd.month, pd.day).open()
-            except AttributeError:
-                MDDatePicker(self.set_date_to).open()
 
     def click_date_switch(self):
         if self.root.ids.report.ids.date_switch.active:
@@ -310,3 +268,21 @@ class Barsic(MDApp):
 
     def on_lang(self, instance, lang):
         self.translation.switch_lang(lang)
+
+    def show_example_alert_dialog(self):
+        if not self.alert_dialog:
+            self.alert_dialog = MDDialog(
+                title="Reset settings?",
+                text="This will reset your device to its default factory settings.",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL",
+                        text_color=self.app.theme_cls.primary_color,
+                    ),
+                    MDFlatButton(
+                        text="ACCEPT",
+                        text_color=self.app.theme_cls.primary_color,
+                    ),
+                ],
+            )
+        self.alert_dialog.open()
