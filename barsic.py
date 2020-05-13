@@ -148,8 +148,14 @@ class Barsic(MDApp):
         self.nav_drawer.toggle_nav_drawer()
         self.manager.current = 'total_report'
         self.action_bar.title = 'total_report'
+        self.action_bar.right_action_items = [['timetable', lambda x: self.screen.ids.total_report.bottom_sheet()]]
         self.list_previous_screens.append('total_report')
         self.screen.ids.action_bar.left_action_items = [['menu', lambda x: self.nav_drawer.toggle_nav_drawer()]]
+
+    def show_result(self, *args):
+        self.manager.current = 'result'
+        self.action_bar.title = 'result'
+        self.screen.ids.action_bar.left_action_items = [['chevron-left', lambda x: self.back_screen(27)]]
 
     def show_reports(self, *args):
         self.nav_drawer.toggle_nav_drawer()
@@ -159,6 +165,14 @@ class Barsic(MDApp):
         self.screen.ids.action_bar.left_action_items = [['menu', lambda x: self.nav_drawer.toggle_nav_drawer()]]
         # Загрузка параметров из INI-файла
         self.load_checkbox()
+
+    def show_parameters(self, *args):
+        self.nav_drawer.toggle_nav_drawer()
+        self.manager.current = 'parameters'
+        self.action_bar.title = 'parameters'
+        self.screen.ids.action_bar.left_action_items = [['chevron-left', lambda x: self.back_screen(27)]]
+        # # Загрузка параметров из INI-файла
+        # self.load_checkbox()
 
     def show_license(self, *args):
         self.nav_drawer.toggle_nav_drawer()

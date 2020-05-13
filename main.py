@@ -87,8 +87,8 @@ def main():
 
         if app:
             try:
-                app.screen.clear_widgets()
-                app.screen.add_widget(report)
+                app.screen.ids.manager.ids.base.clear_widgets()
+                app.screen.ids.manager.ids.base.add_widget(report)
             except AttributeError:
                 create_error_monitor()
         else:

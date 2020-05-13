@@ -93,6 +93,8 @@ Builder.load_string(
             TextInput:
                 id: txt_traceback
                 size_hint_y: None
+                size_hint_x: 1
+                width: max(dp(500), 1)
                 height: max(e_scroll.height, self.minimum_height)
                 background_color: 1, 1, 1, 0.05
                 text: root.txt_report

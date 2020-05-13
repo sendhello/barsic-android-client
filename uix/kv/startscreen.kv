@@ -4,12 +4,15 @@
 #:import License uix.baseclass.license.License
 #:import BaseScreen uix.baseclass.basescreen.BaseScreen
 #:import About uix.baseclass.about.About
-#:import About uix.baseclass.report.Reports
-#:import About uix.baseclass.zones.Zones
-#:import About uix.baseclass.short_report.ShortReport
-#:import About uix.baseclass.total_report.TotalReport
+#:import Reports uix.baseclass.old_report.Reports
+#:import Zones uix.baseclass.zones.Zones
+#:import ShortReport uix.baseclass.short_report.ShortReport
+#:import TotalReport uix.baseclass.total_report.TotalReport
+#:import Result uix.baseclass.result.Result
+#:import Parameters uix.baseclass.parameters.Parameters
 
 <StartScreen>
+    id: screen
 
     MDToolbar:
         id: action_bar
@@ -38,13 +41,19 @@
             id: total_report
 
         Reports:
-            id: report
+            id: old_report
 
         License:
             id: license
 
         About:
             id: about
+
+        Parameters:
+            id: parameters
+
+        Result:
+            id: result
 
     MDNavigationDrawer:
         id: nav_drawer

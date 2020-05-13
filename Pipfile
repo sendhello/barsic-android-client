@@ -9,6 +9,7 @@ verify_ssl = true
 kivy = "*"
 kivymd = "*"
 six = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
