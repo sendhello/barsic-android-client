@@ -62,11 +62,11 @@ def main():
         text_error = traceback.format_exc()
         traceback.print_exc(file=open(os.path.join(directory, 'error.log'), 'w'))
 
-        if app:
-            try:
-                app.stop()
-            except AttributeError:
-                app = None
+        # if app:
+        #     try:
+        #         app.stop()
+        #     except AttributeError:
+        #         app = None
 
         def callback_report(*args):
             '''Функция отправки баг-репорта.'''

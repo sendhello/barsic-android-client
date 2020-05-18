@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from contextlib import contextmanager
+# from contextlib import contextmanager
 from datetime import datetime, timedelta
 
 import requests
@@ -27,15 +27,15 @@ class TotalReport(Screen):
     app = ObjectProperty()
     custom_dialog = None
 
-    @contextmanager
-    def spinner(self):
-        try:
-            self.app.root.ids.total_report.ids.spinner.active = True
-            yield None
-        except Exception:
-            pass
-        finally:
-            self.app.root.ids.total_report.ids.spinner.active = False
+    # @contextmanager
+    # def spinner(self):
+    #     try:
+    #         self.app.root.ids.total_report.ids.spinner.active = True
+    #         yield None
+    #     except Exception:
+    #         pass
+    #     finally:
+    #         self.app.root.ids.total_report.ids.spinner.active = False
 
     def set_date_from(self, date_obj):
         self.app.date_from = date_obj
@@ -152,11 +152,12 @@ class TotalReport(Screen):
         }
         result = self.app.root.ids.result
         response = None
-        with self.spinner():
-            try:
-                response = requests.get(url, params=params)
-            except ConnectionError:
-                result.ids.title.text = 'ConnectionError'
+        # with self.spinner():
+        try:
+            response = requests.get(url, params=params)
+        except ConnectionError:
+            result.ids.title.text = 'ConnectionError'
+
         if response and response.status_code == 200:
             data = response.json()
             result.ids.status.text = str(data['status'])
