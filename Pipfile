@@ -10,6 +10,7 @@ kivy = "*"
 kivymd = "*"
 six = "*"
 requests = "*"
+sentry-sdk = "==0.15.1"
 
 [requires]
 python_version = "3.7"
